@@ -116,7 +116,7 @@ DAEMON=$DIR/sflowtool
 DAEMON_NAME=sflowtool
 
 # Add any command line options for your daemon here
-DAEMON_OPTS="-p 6343 -c cc-syslog-01.conbu.net -d 5141"
+DAEMON_OPTS="-p 6343 -d 5141"
 
 # This next line determines what user the script runs as.
 # Root generally not recommended but necessary if you are using the Raspberry Pi GPIO from Python.
