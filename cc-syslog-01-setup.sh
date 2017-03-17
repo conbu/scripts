@@ -15,7 +15,7 @@ echo "START PROCESSING cc-syslog-01-setup"
 
 echo "STEP: package update"
 apt update
-apt -y upgrade
+#apt -y upgrade
 apt install -y gcc make tmux
 
 echo "STEP: install td-agent and packages"
