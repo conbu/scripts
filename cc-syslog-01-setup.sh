@@ -167,6 +167,9 @@ echo "STEP: make sflowtool launch at boot"
 chmod +x /etc/init.d/sflowtool
 update-rc.d sflowtool defaults
 
+echo "STEP: launch sflowtool"
+/etc/init.d/sflowtool start
+
 echo "COMPLETED"
 
 exit 0
