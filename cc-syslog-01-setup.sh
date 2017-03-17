@@ -21,6 +21,7 @@ apt install -y gcc make tmux
 echo "STEP: install td-agent and packages"
 apt install -y curl ruby
 curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh | sh
+/usr/sbin/td-agent-gem install fluent-plugin-elasticsearch
 /usr/sbin/td-agent-gem install fluent-plugin-s3
 /usr/sbin/td-agent-gem install fluent-plugin-netflow
 
