@@ -52,7 +52,7 @@ cat << EOS > ${PATH_TDAGENTCONF}
     signature_version s3
 
     path log_
-    buffer_path /tmp/s3
+    buffer_path /var/log/td-agent/buffer/s3
     time_slice_format %Y%m%d%H
     time_slice_wait 30m
     buffer_chunk_limit 256m
