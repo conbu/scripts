@@ -25,7 +25,7 @@ curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh 
 /usr/sbin/td-agent-gem install fluent-plugin-netflow
 
 echo "STEP: setup td-agent.conf"
-cat < EOS > ${PATH_TDAGENTCONF}
+cat << EOS > ${PATH_TDAGENTCONF}
 <source>
   @type syslog
   port 514
@@ -96,7 +96,7 @@ make
 make install
 
 echo "STEP: setup /etc/init.d/sflowtool"
-cat < 'EOS' > PATH_INITD_SFLOWTOOL
+cat << 'EOS' > PATH_INITD_SFLOWTOOL
 #!/bin/sh
 
 ### BEGIN INIT INFO
