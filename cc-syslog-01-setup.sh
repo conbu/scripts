@@ -90,13 +90,13 @@ sudo setcap 'cap_net_bind_service=ep' /opt/td-agent/embedded/bin/ruby
 echo "STEP: install sflowtool"
 cd /tmp/
 git clone https://github.com/kplimack/sflowtool.git
-cd /tmp/sflowtool
-configure
+cd sflowtool
+./configure
 make
 make install
 
 echo "STEP: setup /etc/init.d/sflowtool"
-cat << 'EOS' > PATH_INITD_SFLOWTOOL
+cat << 'EOS' > ${PATH_INITD_SFLOWTOOL}
 #!/bin/sh
 
 ### BEGIN INIT INFO
