@@ -86,7 +86,10 @@ EOS
 ls ${PATH_TDAGENTCONF}
 
 echo "STEP: add cap_net_bind_service to ruby"
-sudo setcap 'cap_net_bind_service=ep' /opt/td-agent/embedded/bin/ruby
+setcap 'cap_net_bind_service=ep' /opt/td-agent/embedded/bin/ruby
+
+echo "STEP: restart td-agetn"
+service td-agent restart
 
 echo "STEP: install sflowtool"
 cd /tmp/
