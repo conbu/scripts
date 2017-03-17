@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# example:
+# curl -s https://raw.githubusercontent.com/conbu/scripts/master/cc-syslog-01-setup.sh | /bin/bash -s 10.200.0.50 test_aws_key test_aws_sec_key test_bucket   
+
 HOST_ELASTICSEARCH=$1
 AWS_KEY_ID=$2
 AWS_SEC_KEY=$3
