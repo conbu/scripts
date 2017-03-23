@@ -73,14 +73,24 @@ cat << EOS > ${PATH_TDAGENTCONF}
 </match>
 
 <match netflow.**>
-  type elasticsearch
-  host ${HOST_ELASTICSEARCH}
-  port 9200
-  type_name netflow
+  type copy
+  <store>
+    type elasticsearch
+    host ${HOST_ELASTICSEARCH}
+    port 9200
+    type_name netflow
 
-  logstash_format true
-  logstash_prefix flow
-  logstash_dateformat %Y%m%d
+    logstash_format true
+    logstash_prefix flow
+    logstash_dateformat %Y%m%d
+  </store>
+  <store>
+    type file
+    path /var/log/td-agent/buffer/netflow
+    time_slice_format %Y%m%d
+    time_slice_wait 10m
+    time_format %Y%m%dT%H%M%S%z
+  </store>
 </match>
 EOS
 ls ${PATH_TDAGENTCONF}
