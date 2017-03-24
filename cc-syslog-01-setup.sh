@@ -37,7 +37,7 @@ cat << EOS > ${PATH_TDAGENTCONF}
 </source>
 
 <source>
-  @type ｓflow
+  @type sflow
   tag sflow.event
   port 6343
 </source>
