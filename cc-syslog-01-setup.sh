@@ -16,14 +16,16 @@ echo "START PROCESSING cc-syslog-01-setup"
 echo "STEP: package update"
 apt update
 #apt -y upgrade
-apt install -y gcc make tmux
+apt install -y gcc make tmux g++
 
 echo "STEP: install td-agent and packages"
 apt install -y curl ruby
 curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh | sh
 /usr/sbin/td-agent-gem install fluent-plugin-elasticsearch
 /usr/sbin/td-agent-gem install fluent-plugin-s3
-/usr/sbin/td-agent-gem install fluent-plugin-netflow
+#/usr/sbin/td-agent-gem install fluent-plugin-netflow
+/usr/sbin/td-agent-gem uninstall bindata
+/usr/sbin/td-agent-gem install fluent-plugin-sflow
 
 echo "STEP: setup td-agent.conf"
 cat << EOS > ${PATH_TDAGENTCONF}
@@ -35,9 +37,9 @@ cat << EOS > ${PATH_TDAGENTCONF}
 </source>
 
 <source>
-  @type netflow
-  tag netflow.event
-  port 5141
+  @type ｓflow
+  tag sflow.event
+  port 6343
 </source>
 
 <match syslog.**>
@@ -72,21 +74,21 @@ cat << EOS > ${PATH_TDAGENTCONF}
   </store>
 </match>
 
-<match netflow.**>
+<match sflow.**>
   type copy
   <store>
     type elasticsearch
     host ${HOST_ELASTICSEARCH}
     port 9200
-    type_name netflow
+    type_name sflow
 
     logstash_format true
-    logstash_prefix flow
+    logstash_prefix sflow
     logstash_dateformat %Y%m%d
   </store>
   <store>
     type file
-    path /var/log/td-agent/buffer/netflow
+    path /var/log/td-agent/buffer/sflow
     time_slice_format %Y%m%d
     time_slice_wait 10m
     time_format %Y%m%dT%H%M%S%z
@@ -109,7 +111,7 @@ cd sflowtool
 make
 make install
 
-echo "STEP: setup /etc/init.d/sflowtool"
+echo "STEP-obsoleted: setup /etc/init.d/sflowtool"
 cat << 'EOS' > ${PATH_INITD_SFLOWTOOL}
 #!/bin/sh
 
@@ -176,12 +178,12 @@ exit 0
 EOS
 ls ${PATH_INITD_SFLOWTOOL}
 
-echo "STEP: make sflowtool launch at boot"
+echo "STEP-obsoleted: make sflowtool launch at boot"
 chmod +x /etc/init.d/sflowtool
-update-rc.d sflowtool defaults
+#update-rc.d sflowtool defaults
 
-echo "STEP: launch sflowtool"
-/etc/init.d/sflowtool start
+echo "STEP-obsoleted: launch sflowtool"
+#/etc/init.d/sflowtool start
 
 echo "COMPLETED"
 
