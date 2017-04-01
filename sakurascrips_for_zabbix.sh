@@ -25,7 +25,7 @@
 # @sacloud-text required maxlen=50 ntp_server "ntpサーバのネットワークアドレス(例:10.200.0.16)"
 
 #User
-sudo useradd -p $(perl -e 'print crypt("@@@user_pass@@@", "\$6\$neconbu")') -m --skel /etc/skel -s /bin/bash @@@user_name@@@
+sudo useradd -p $(perl -e 'print crypt("@@@user_pass@@@", "\$6\$hijiki")') -m --skel /etc/skel -s /bin/bash @@@user_name@@@
 sed -i "s%sudo:\(.*\)$%sudo:\1,@@@user_name@@@%g" /etc/group
 
 export DEBIAN_FRONTEND=noninteractive
