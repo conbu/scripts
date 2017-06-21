@@ -52,6 +52,6 @@ echo "cd to output directory"
 cd ${OUTPUT}
 
 echo "Downloading objects (grep ${GREPOPT})"
-s3cmd ls s3://${OUTPUT} | grep ${GREPOPT} | awk '{print $4}' | xargs -I@ s3cmd get @
+s3cmd ls s3://${OUTPUT} | grep -e "" ${GREPOPT} | awk '{print $4}' | xargs -I@ s3cmd get @
 
 echo "object downloaded to ./${OUTPUT}"
