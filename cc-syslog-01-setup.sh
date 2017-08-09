@@ -9,7 +9,6 @@ AWS_SEC_KEY=$3
 AWS_BUCKET=$4
 
 PATH_TDAGENTCONF=/etc/td-agent/td-agent.conf
-PATH_INITD_SFLOWTOOL=/etc/init.d/sflowtool
 
 echo "START PROCESSING cc-syslog-01-setup"
 
@@ -23,9 +22,7 @@ apt install -y curl ruby
 curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-xenial-td-agent2.sh | sh
 /usr/sbin/td-agent-gem install fluent-plugin-elasticsearch
 /usr/sbin/td-agent-gem install fluent-plugin-s3
-#/usr/sbin/td-agent-gem install fluent-plugin-netflow
-/usr/sbin/td-agent-gem uninstall bindata
-/usr/sbin/td-agent-gem install fluent-plugin-sflow
+/usr/sbin/td-agent-gem install fluent-plugin-netflow
 
 echo "STEP: setup td-agent.conf"
 cat << EOS > ${PATH_TDAGENTCONF}
@@ -37,9 +34,9 @@ cat << EOS > ${PATH_TDAGENTCONF}
 </source>
 
 <source>
-  @type sflow
-  tag sflow.event
-  port 6343
+  @type netflow
+  tag netflow.event
+  port 5141
 </source>
 
 <match syslog.**>
@@ -74,21 +71,21 @@ cat << EOS > ${PATH_TDAGENTCONF}
   </store>
 </match>
 
-<match sflow.**>
+<match netflow.**>
   type copy
   <store>
     type elasticsearch
     host ${HOST_ELASTICSEARCH}
     port 9200
-    type_name sflow
+    type_name netflow
 
     logstash_format true
-    logstash_prefix sflow
+    logstash_prefix netflow
     logstash_dateformat %Y%m%d
   </store>
   <store>
     type file
-    path /var/log/td-agent/buffer/sflow
+    path /var/log/td-agent/buffer/netflow
     time_slice_format %Y%m%d
     time_slice_wait 10m
     time_format %Y%m%dT%H%M%S%z
@@ -100,7 +97,7 @@ ls ${PATH_TDAGENTCONF}
 echo "STEP: add cap_net_bind_service to ruby"
 setcap 'cap_net_bind_service=ep' /opt/td-agent/embedded/bin/ruby
 
-echo "STEP: restart td-agetn"
+echo "STEP: restart td-agent"
 service td-agent restart
 
 echo "STEP: install sflowtool"
@@ -179,7 +176,7 @@ EOS
 ls ${PATH_INITD_SFLOWTOOL}
 
 echo "STEP-obsoleted: make sflowtool launch at boot"
-chmod +x /etc/init.d/sflowtool
+#chmod +x /etc/init.d/sflowtool
 #update-rc.d sflowtool defaults
 
 echo "STEP-obsoleted: launch sflowtool"
